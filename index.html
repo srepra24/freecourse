@@ -547,22 +547,28 @@
                             </div>
                         </div>
 
+                        <!-- DAY 1 ASSIGNMENT: AUTO ADVANCE ON CLICK -->
                         <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 text-center">
-                            <p class="text-xs text-slate-400 mb-3">Complete Day 1 assignment and validate your problem solving:</p>
-                            <a href="https://forms.google.com/" target="_blank" class="inline-block bg-slate-900 border border-slate-700 text-slate-200 text-xs px-4 py-2 rounded-lg font-bold hover:bg-slate-800 mb-4">
-                                Open Google Form
+                            <p class="text-xs text-slate-400 mb-3">Complete the Day 1 assignment to validate your problem solving:</p>
+                            <a href="https://forms.google.com/" target="_blank" onclick="handleDay1AutoSubmit()" class="inline-flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs px-6 py-3.5 rounded-xl shadow-md transition">
+                                <i class="fas fa-file-pen text-sm"></i> Fill Day 1 Google Form (Auto Unlock Day 2)
                             </a>
-                            <button onclick="updateSheetProgress('Day 1 Done (33%)', 'd2')" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-3 rounded-xl text-xs">
-                                Day 1 Completed ➔ Unlock Day 2
-                            </button>
+                            <p class="text-[11px] text-slate-500 mt-2">Form link open cheyagane Day 1 status (33%) sync ayyi Day 2 unlock avthundi.</p>
                         </div>
                     </div>
 
                     <!-- TAB DAY 2 -->
                     <div id="tab-content-d2" class="space-y-4 hidden">
-                        <div class="flex justify-between items-center">
-                            <h4 class="text-base font-bold text-white">Day 2: Skill Selection & Field Outreach</h4>
-                            <span class="text-[11px] font-bold text-red-400 bg-red-950/40 border border-red-800 px-2.5 py-1 rounded-full">⏱ 24H Deadline</span>
+                        <div class="flex flex-wrap items-center justify-between gap-2 p-3 bg-slate-950 border border-slate-800 rounded-xl">
+                            <div>
+                                <h4 class="text-base font-bold text-white">Day 2: Skill Selection & Field Outreach</h4>
+                                <p class="text-[11px] text-slate-400">Pick 1 skill and start field action within deadline.</p>
+                            </div>
+                            <div class="flex items-center gap-2 bg-red-950/60 border border-red-500/50 px-3 py-1.5 rounded-lg">
+                                <i class="fas fa-clock text-red-400 animate-pulse text-xs"></i>
+                                <span class="text-xs font-mono font-bold text-red-300">24H Deadline:</span>
+                                <span id="day2-timer-display" class="text-xs font-mono font-extrabold text-white">24:00:00</span>
+                            </div>
                         </div>
 
                         <label class="block text-xs text-slate-400">Choose your practical skill:</label>
@@ -583,6 +589,48 @@
                             <iframe id="portal-d2-frame" src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
                         </div>
 
+                        <!-- UNLOCK NEXT VIDEOS BUTTON & CONTAINER -->
+                        <div class="p-4 rounded-xl bg-slate-950 border border-blue-500/30 text-center">
+                            <button id="btn-unlock-next-vids" onclick="unlockDay2NextVideos()" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-extrabold py-3.5 px-4 rounded-xl text-xs sm:text-sm shadow-lg transition flex items-center justify-center gap-2">
+                                <i class="fas fa-lock-open"></i> Unlock Next Action Videos (Client Strategy, Objections & Mindset)
+                            </button>
+
+                            <div id="day2-next-videos-box" class="hidden mt-6 text-left space-y-6">
+                                <div class="border-t border-slate-800 pt-4">
+                                    <span class="text-[10px] font-bold text-blue-400 uppercase tracking-widest bg-blue-950 px-2 py-0.5 rounded">Action Video 1</span>
+                                    <h5 class="text-sm font-bold text-white mt-1 mb-2">Client Selection Video</h5>
+                                    <div class="video-wrapper">
+                                        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+                                    </div>
+                                </div>
+
+                                <div class="border-t border-slate-800 pt-4">
+                                    <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-widest bg-emerald-950 px-2 py-0.5 rounded">Action Video 2</span>
+                                    <h5 class="text-sm font-bold text-white mt-1 mb-2">Client Interaction Video</h5>
+                                    <div class="video-wrapper">
+                                        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+                                    </div>
+                                </div>
+
+                                <div class="border-t border-slate-800 pt-4">
+                                    <span class="text-[10px] font-bold text-amber-400 uppercase tracking-widest bg-amber-950 px-2 py-0.5 rounded">Action Video 3</span>
+                                    <h5 class="text-sm font-bold text-white mt-1 mb-2">Objection Handling Video</h5>
+                                    <div class="video-wrapper">
+                                        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+                                    </div>
+                                </div>
+
+                                <div class="border-t border-slate-800 pt-4">
+                                    <span class="text-[10px] font-bold text-purple-400 uppercase tracking-widest bg-purple-950 px-2 py-0.5 rounded">Action Video 4</span>
+                                    <h5 class="text-sm font-bold text-white mt-1 mb-2">Boost Your Brain Video</h5>
+                                    <div class="video-wrapper">
+                                        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- DRIVE PROOF SUBMISSION -->
                         <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-3">
                             <label class="block text-xs text-slate-400 font-bold">5 Field Proofs + Payment Proof (Google Drive Shared Folder Link):</label>
                             <input type="url" id="portal-drive-input" placeholder="https://drive.google.com/drive/folders/..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs text-white">
@@ -989,6 +1037,10 @@
             });
             document.getElementById('tab-content-' + day).classList.remove('hidden');
             document.getElementById('btn-tab-' + day).className = "flex-1 py-2 text-xs font-bold rounded-lg bg-blue-600 text-white";
+
+            if (day === 'd2') {
+                startDay2Timer();
+            }
         }
 
         function changeDay2Video(val) {
@@ -1001,6 +1053,52 @@
             const hourly = Math.round(daily / 8);
             document.getElementById('disp-daily').innerText = '₹' + daily;
             document.getElementById('disp-hourly').innerText = '₹' + hourly;
+        }
+
+        // DAY 1 AUTO SUBMIT & ADVANCE TO DAY 2
+        function handleDay1AutoSubmit() {
+            if (!currentUser) return;
+            currentUser.progress = "Day 1 Done (33%)";
+            localStorage.setItem("challenge_user", JSON.stringify(currentUser));
+            document.getElementById('dash-user-prog').innerText = currentUser.progress;
+            updateHomeUserBanner();
+
+            const url = `${SCRIPT_URL}?action=updateProgress&phone=${encodeURIComponent(currentUser.phone)}&progress=${encodeURIComponent('Day 1 Done (33%)')}`;
+            fetch(url, { mode: 'no-cors' });
+
+            setTimeout(() => {
+                switchDayTab('d2');
+            }, 800);
+        }
+
+        // DAY 2 COUNTDOWN TIMER (24 HOURS)
+        let timerInterval = null;
+        function startDay2Timer() {
+            if (timerInterval) return;
+            let totalSeconds = 24 * 3600;
+            const timerEl = document.getElementById('day2-timer-display');
+
+            timerInterval = setInterval(() => {
+                if (totalSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    timerEl.innerText = "00:00:00";
+                    return;
+                }
+                totalSeconds--;
+                const hrs = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+                const mins = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+                const secs = String(totalSeconds % 60).padStart(2, '0');
+                timerEl.innerText = `${hrs}:${mins}:${secs}`;
+            }, 1000);
+        }
+
+        // DAY 2 UNLOCK NEXT VIDEOS
+        function unlockDay2NextVideos() {
+            const box = document.getElementById('day2-next-videos-box');
+            const btn = document.getElementById('btn-unlock-next-vids');
+            box.classList.remove('hidden');
+            btn.innerHTML = '<i class="fas fa-check-circle text-emerald-400"></i> Next Action Videos Unlocked!';
+            btn.classList.add('opacity-90');
         }
 
         function updateSheetProgress(progressText, nextTab) {
