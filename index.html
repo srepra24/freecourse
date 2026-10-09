@@ -518,10 +518,17 @@
                         <i class="fas fa-arrow-left"></i> Back to Dashboard
                     </button>
 
+                    <!-- TAB BUTTONS WITH LOCK STATUS -->
                     <div class="flex gap-2 bg-slate-950 p-1.5 rounded-xl border border-slate-800 mb-6">
-                        <button id="btn-tab-d1" onclick="switchDayTab('d1')" class="flex-1 py-2 text-xs font-bold rounded-lg bg-blue-600 text-white">Day 1</button>
-                        <button id="btn-tab-d2" onclick="switchDayTab('d2')" class="flex-1 py-2 text-xs font-bold rounded-lg text-slate-400">Day 2</button>
-                        <button id="btn-tab-d3" onclick="switchDayTab('d3')" class="flex-1 py-2 text-xs font-bold rounded-lg text-slate-400">Day 3</button>
+                        <button id="btn-tab-d1" onclick="switchDayTab('d1')" class="flex-1 py-2 text-xs font-bold rounded-lg bg-blue-600 text-white transition flex items-center justify-center gap-1">
+                            <span>Day 1</span>
+                        </button>
+                        <button id="btn-tab-d2" onclick="trySwitchDay('d2')" class="flex-1 py-2 text-xs font-bold rounded-lg bg-slate-900 border border-slate-800 text-slate-500 transition flex items-center justify-center gap-1">
+                            <span id="lock-icon-d2">🔒</span> <span>Day 2</span>
+                        </button>
+                        <button id="btn-tab-d3" onclick="trySwitchDay('d3')" class="flex-1 py-2 text-xs font-bold rounded-lg bg-slate-900 border border-slate-800 text-slate-500 transition flex items-center justify-center gap-1">
+                            <span id="lock-icon-d3">🔒</span> <span>Day 3</span>
+                        </button>
                     </div>
 
                     <!-- TAB DAY 1 -->
@@ -635,7 +642,7 @@
                             <label class="block text-xs text-slate-400 font-bold">5 Field Proofs + Payment Proof (Google Drive Shared Folder Link):</label>
                             <input type="url" id="portal-drive-input" placeholder="https://drive.google.com/drive/folders/..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs text-white">
                             <button onclick="submitDay2Drive()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl text-xs">
-                                Submit Drive Link (66% Completion)
+                                Submit Drive Link (Unlock Day 3)
                             </button>
                         </div>
                     </div>
@@ -676,10 +683,8 @@
     </footer>
 
     <script>
-        // Exact Apps Script Web App URL
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwoQhY-GsBPdTKDoyqERezCsYdPs3DQPnz4gbuxsoAaIkZ8VF3-vkxLuEPxE5Wr1hTjrg/exec";
 
-        // DEFAULT LANGUAGE SET TO ENGLISH
         let currentLang = 'en'; 
         let currentUser = JSON.parse(localStorage.getItem("challenge_user")) || null;
 
@@ -931,6 +936,7 @@
             document.getElementById('dash-user-prog').innerText = currentUser.progress || "0%";
             updateHomeUserBanner();
             backToCourseCards();
+            refreshTabLocks();
         }
 
         function logoutPortal() {
@@ -1023,6 +1029,8 @@
         function openCourseTabs() {
             document.getElementById('course-cards-view').classList.add('hidden');
             document.getElementById('course-study-view').classList.remove('hidden');
+            refreshTabLocks();
+            switchDayTab('d1');
         }
 
         function backToCourseCards() {
@@ -1030,17 +1038,73 @@
             document.getElementById('course-study-view').classList.add('hidden');
         }
 
+        // REFRESH VISUAL TAB LOCKS BASED ON USER PROGRESS
+        function refreshTabLocks() {
+            const prog = currentUser ? (currentUser.progress || "") : "";
+            const isDay1Done = prog.includes("Day 1 Done") || prog.includes("Day 2 Done") || prog.includes("Completed");
+            const isDay2Done = prog.includes("Day 2 Done") || prog.includes("Completed");
+
+            const lock2 = document.getElementById('lock-icon-d2');
+            const lock3 = document.getElementById('lock-icon-d3');
+            const btn2 = document.getElementById('btn-tab-d2');
+            const btn3 = document.getElementById('btn-tab-d3');
+
+            // Day 2 Lock Check
+            if (isDay1Done) {
+                if (lock2) lock2.innerText = "🔓";
+                btn2.classList.remove('text-slate-500', 'cursor-not-allowed');
+                btn2.classList.add('text-slate-300', 'hover:border-slate-700');
+            } else {
+                if (lock2) lock2.innerText = "🔒";
+                btn2.classList.add('text-slate-500', 'cursor-not-allowed');
+                btn2.classList.remove('text-slate-300', 'hover:border-slate-700');
+            }
+
+            // Day 3 Lock Check
+            if (isDay2Done) {
+                if (lock3) lock3.innerText = "🔓";
+                btn3.classList.remove('text-slate-500', 'cursor-not-allowed');
+                btn3.classList.add('text-slate-300', 'hover:border-slate-700');
+            } else {
+                if (lock3) lock3.innerText = "🔒";
+                btn3.classList.add('text-slate-500', 'cursor-not-allowed');
+                btn3.classList.remove('text-slate-300', 'hover:border-slate-700');
+            }
+        }
+
+        // CONTROL TAB SWITCHING WITH STRICT CHECKS
+        function trySwitchDay(targetDay) {
+            const prog = currentUser ? (currentUser.progress || "") : "";
+            const isDay1Done = prog.includes("Day 1 Done") || prog.includes("Day 2 Done") || prog.includes("Completed");
+            const isDay2Done = prog.includes("Day 2 Done") || prog.includes("Completed");
+
+            if (targetDay === 'd2') {
+                if (!isDay1Done) {
+                    alert("⚠️ Day 2 is Locked!\nDay 1 assignment (Google Form) complete cheyandi, appude Day 2 unlock avthundi.");
+                    return;
+                }
+                switchDayTab('d2');
+            } else if (targetDay === 'd3') {
+                if (!isDay2Done) {
+                    alert("⚠️ Day 3 is Locked!\nDay 2 lo mee 5 field work proofs unna Google Drive folder link submit cheyandi, appude Day 3 unlock avthundi.");
+                    return;
+                }
+                switchDayTab('d3');
+            }
+        }
+
         function switchDayTab(day) {
             ['d1', 'd2', 'd3'].forEach(d => {
                 document.getElementById('tab-content-' + d).classList.add('hidden');
-                document.getElementById('btn-tab-' + d).className = "flex-1 py-2 text-xs font-bold rounded-lg text-slate-400";
+                document.getElementById('btn-tab-' + d).className = "flex-1 py-2 text-xs font-bold rounded-lg bg-slate-900 border border-slate-800 text-slate-400 transition flex items-center justify-center gap-1";
             });
             document.getElementById('tab-content-' + day).classList.remove('hidden');
-            document.getElementById('btn-tab-' + day).className = "flex-1 py-2 text-xs font-bold rounded-lg bg-blue-600 text-white";
+            document.getElementById('btn-tab-' + day).className = "flex-1 py-2 text-xs font-bold rounded-lg bg-blue-600 text-white transition flex items-center justify-center gap-1";
 
             if (day === 'd2') {
                 startDay2Timer();
             }
+            refreshTabLocks();
         }
 
         function changeDay2Video(val) {
@@ -1062,6 +1126,7 @@
             localStorage.setItem("challenge_user", JSON.stringify(currentUser));
             document.getElementById('dash-user-prog').innerText = currentUser.progress;
             updateHomeUserBanner();
+            refreshTabLocks();
 
             const url = `${SCRIPT_URL}?action=updateProgress&phone=${encodeURIComponent(currentUser.phone)}&progress=${encodeURIComponent('Day 1 Done (33%)')}`;
             fetch(url, { mode: 'no-cors' });
@@ -1107,6 +1172,7 @@
             localStorage.setItem("challenge_user", JSON.stringify(currentUser));
             document.getElementById('dash-user-prog').innerText = progressText;
             updateHomeUserBanner();
+            refreshTabLocks();
 
             const url = `${SCRIPT_URL}?action=updateProgress&phone=${encodeURIComponent(currentUser.phone)}&progress=${encodeURIComponent(progressText)}`;
             fetch(url);
@@ -1126,6 +1192,7 @@
             localStorage.setItem("challenge_user", JSON.stringify(currentUser));
             document.getElementById('dash-user-prog').innerText = currentUser.progress;
             updateHomeUserBanner();
+            refreshTabLocks();
 
             const url = `${SCRIPT_URL}?action=updateProgress&phone=${encodeURIComponent(currentUser.phone)}&progress=${encodeURIComponent('Day 2 Done (66%)')}&driveLink=${encodeURIComponent(link)}`;
             fetch(url);
